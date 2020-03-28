@@ -18,9 +18,16 @@ div#navbar {
     border-bottom: 1px #666 solid;
 }
 
+span#navbar-online-users {
+    float: right;
+}
+
 p {
-    padding-left: 5px;
+    padding-left:  5px;
+    padding-right: 5px;
+
     font: 12px 'Saira Semi Condensed';
+    color: white
 }
 
 a {
