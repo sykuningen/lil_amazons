@@ -22,12 +22,43 @@ span#navbar-online-users {
     float: right;
 }
 
+div#container {
+    width:      100%;
+    min-height: 95vh;
+}
+
+.draggable {
+    touch-action: none;
+    user-select:  none;
+}
+
+div#window-lobby-list {
+    position: relative;
+    top:      20px;
+    left:     20px;
+
+    width:  800px;
+    height: 600px;
+
+    background: rgba(0,0,0,.5);
+    border: 1px #666 solid;
+}
+
 p {
     padding-left:  5px;
     padding-right: 5px;
 
     font: 12px 'Saira Semi Condensed';
     color: white
+}
+
+p.window-title {
+    position: absolute;
+    bottom:   -21px;
+    width:    100px;
+
+    background: black;
+    border: 1px #666 solid;
 }
 
 a {

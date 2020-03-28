@@ -8,6 +8,9 @@
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"   integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js" integrity="sha256-bQmrZe4yPnQrLTY+1gYylfNMBuGfnT/HKsCGX+9Xuqo=" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
+
+        <script src="/js/ui.js"></script>
         <script src="/js/client.js"></script>
     </head>
 
@@ -17,6 +20,12 @@
                 <a href='/'>Home</a>
                 <span id='navbar-online-users'></span>
             </p>
+        </div>
+
+        <div id='container'>
+            <div id='window-lobby-list' class='draggable'>
+                <p class='window-title'>Lobby List</p>
+            </div>
         </div>
     </body>
 </html>
