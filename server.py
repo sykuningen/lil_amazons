@@ -4,7 +4,8 @@ import socketio
 
 # *============================================================= SERVER INIT
 static_files = {
-    '/': 'pages/index.html'
+    '/': 'pages/index.html',
+    '/css/default.css': 'public/css/default.css'
 }
 
 sio = socketio.Server()
