@@ -73,3 +73,11 @@ a {
 a:hover {
     text-decoration: underline;
 }
+
+table {
+    width: 100%;
+}
+
+tr.header p {
+    font-weight: bold;
+}
