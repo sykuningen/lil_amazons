@@ -1,4 +1,7 @@
 $(() => {
+    // Set up draggable windows
+    let current_z_index = 10;
+
     interact('.draggable')
         .draggable({
             modifiers: [
@@ -11,6 +14,10 @@ $(() => {
             listeners: {
                 move: dragMoveListener
             }
+        })
+        .on('tap', (event) => {
+            event.target.style.zIndex = current_z_index;
+            current_z_index += 1;
         });
 
     function dragMoveListener(event) {
@@ -24,4 +31,17 @@ $(() => {
     }
 
     window.dragMoveListener = dragMoveListener;
+
+    // Toggle windows
+    $('#navbar').on('click', 'a', (e) => {
+        if (e.target.id != 'navbar-home') {
+            const target = '#' + e.target.id.replace('navbar', 'window');
+
+            if ($(target).is(':visible')) {
+                $(target).hide();
+            } else {
+                $(target).show();
+            }
+        }
+    });
 });
