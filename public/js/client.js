@@ -18,12 +18,16 @@ $(() => {
                 + '</p></td><td><p>'
                 + lobbies[i].players
                 + '</p></td><td><p>'
-                + '<a href="#">Join</a>'
+                + '<a href="#" id="' + lobbies[i].id.toString() + '">Join</a>'
                 + '</p></td></tr>';
         }
 
         html += '</table>';
         $('#lobby-list').html(html);
+    });
+
+    $('#lobby-list').on('click', 'a', (e) => {
+        socket.emit('join_lobby', e.target.id);
     });
 
     // Lobby Create
@@ -33,8 +37,17 @@ $(() => {
         }
     });
 
-    socket.on('join_lobby', (lobby_info) => {
+    socket.on('update_lobby', (lobby_info) => {
         $('#lobby-id').html('#' + lobby_info.id.toString());
-        $('#lobby-players').html(lobby_info.players);
+        $('#lobby-players').html(lobby_info.players.join('\n'));
+
+        $('#window-lobby-create').show();
+    });
+
+    socket.on('leave_lobby', () => {
+        $('#window-lobby-create').hide();
+
+        $('#lobby-id').html('none');
+        $('#lobby-players').html('');
     });
 });
