@@ -18,7 +18,39 @@ $(() => {
         .on('tap', (event) => {
             event.target.style.zIndex = current_z_index;
             current_z_index += 1;
-        });
+        })
+        .resizable({
+            edges: { left: true, right: true, bottom: true, top: true },
+
+            listeners: {
+              move(e) {
+                let x = (parseFloat(e.target.getAttribute('data-x')) || 0);
+                let y = (parseFloat(e.target.getAttribute('data-y')) || 0);
+
+                e.target.style.width  = e.rect.width  + 'px';
+                e.target.style.height = e.rect.height + 'px';
+
+                x += e.deltaRect.left;
+                y += e.deltaRect.top;
+
+                e.target.style.webkitTransform = e.target.style.transform = 'translate(' + x + 'px,' + y + 'px)';
+
+                e.target.setAttribute('data-x', x);
+                e.target.setAttribute('data-y', y);
+              }
+            },
+
+            modifiers: [
+              interact.modifiers.restrictEdges({
+                outer: 'parent'
+              }),
+              interact.modifiers.restrictSize({
+                min: { width: 200, height: 100 }
+              })
+            ],
+
+            inertia: true
+          });
 
     function dragMoveListener(event) {
         const target = event.target;
