@@ -1,4 +1,5 @@
 import eventlet
+import os
 import socketio
 
 from src.Lobby import Lobby
@@ -17,6 +18,9 @@ sio = socketio.Server()
 app = socketio.WSGIApp(sio, static_files=static_files)
 
 port = 8000
+
+if 'PORT' in os.environ.keys():
+    port = int(os.environ['PORT'])
 
 # Server runtime data
 online_users = 0
