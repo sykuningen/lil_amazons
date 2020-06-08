@@ -2,6 +2,7 @@ import eventlet
 import socketio
 
 from src.Lobby import Lobby
+from src.Game import Game
 
 
 # *============================================================= SERVER INIT
@@ -23,6 +24,7 @@ users = {}
 
 cur_lobby_id = 0  # TODO: Use lock when accessing this
 lobbies = {}
+games = {}
 
 
 # *============================================================= SOCKET.IO
@@ -123,6 +125,28 @@ def joinLobby(sid, lobby_id):
 
             # Update lobby list for all users
             sio.emit('lobby_list', [lobbies[x].toJSON() for x in lobbies])
+
+
+@sio.on('start_game')
+def startGame(sid):
+    # Ensure that the user has permission to start the game
+    if not users[sid]['is_in_lobby']:
+        return
+
+    if not users[sid]['is_lobby_owner']:
+        return
+
+    # Create a game based on the lobby parameters and players
+    lobby_id = users[sid]['in_lobby']
+
+    if lobby_id not in lobbies:
+        return
+
+    if lobbies[lobby_id].started:
+        return
+
+    game = Game(sio, lobbies[lobby_id])
+    games[lobby_id] = game
 
 
 # *============================================================= MAIN

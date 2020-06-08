@@ -34,6 +34,8 @@ $(() => {
     $('#window-lobby-create').on('click', 'a', (e) => {
         if (e.target.id == 'btn-create-lobby') {
             socket.emit('create_lobby');
+        } else if (e.target.id == 'btn-start-game') {
+            socket.emit('start_game');
         }
     });
 
@@ -49,5 +51,10 @@ $(() => {
 
         $('#lobby-id').html('none');
         $('#lobby-players').html('');
+    });
+
+    // Game
+    socket.on('game_data', game_data => {
+        console.log(game_data);
     });
 });
