@@ -55,6 +55,44 @@ $(() => {
 
     // Game
     socket.on('game_data', game_data => {
-        console.log(game_data);
+        $('#window-game').show();
+        $('#game').html(app.view);
+        renderBoard(game_data.board);
     });
+
+
+    // *======================================================== PIXIJS
+    const app = new PIXI.Application({
+        width:  800,
+        height: 600,
+        antialias:   true,
+        transparent: true });
+
+    const board_offset = 20;
+    const tile_size    = 50;
+
+    const grp_board_grid = new PIXI.Graphics();
+    grp_board_grid.lineStyle(1, 0xffffff, .25, 0);
+    app.stage.addChild(grp_board_grid);
+
+
+    function renderBoard(board) {
+        let offset_x = 0;
+        let offset_y = 0;
+
+        for (let x = 0; x < board.width; x++) {
+            for (let y = 0; y < board.height; y++) {
+                grp_board_grid.drawRect(
+                    x * tile_size + board_offset + offset_x,
+                    y * tile_size + board_offset + offset_y,
+                    tile_size,
+                    tile_size );
+
+                offset_y--;
+            }
+
+            offset_y = 0
+            offset_x--;
+        }
+    }
 });

@@ -24,7 +24,7 @@ class Game:
         print('Game ID#' + str(self.id) + ' started')
 
         # Initialize the game board
-        self.board = Board(20, 20)
+        self.board = Board(10, 10)
 
         for p in self.lobby.players:
             sio.emit('game_data', self.toJSON(), room=p)

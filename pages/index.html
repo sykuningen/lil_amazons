@@ -8,6 +8,7 @@
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"   integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js" integrity="sha256-bQmrZe4yPnQrLTY+1gYylfNMBuGfnT/HKsCGX+9Xuqo=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.2.4/pixi.min.js"    integrity="sha256-5j/MTZ4A3D/1ZAeBTUrY5bKvNGvtp/ltP3Z9P9cTyVc=" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
 
         <script src="/js/ui.js"></script>
@@ -40,6 +41,14 @@
 <span id='lobby-players'></span></p>
 
                 <p><a href='#' id='btn-start-game'>Start Game</a></p>
+            </div>
+
+            <div id='window-game' class='draggable window'>
+                <p class='window-title'>Game</p>
+
+                <div id='game-container'>
+                    <div id='game'></div>
+                </div>
             </div>
         </div>
     </body>
