@@ -15,42 +15,45 @@ $(() => {
                 move: dragMoveListener
             }
         })
-        .on('tap', (event) => {
-            event.target.style.zIndex = current_z_index;
-            current_z_index += 1;
-        })
         .resizable({
             edges: { left: true, right: true, bottom: true, top: true },
 
             listeners: {
-              move(e) {
-                let x = (parseFloat(e.target.getAttribute('data-x')) || 0);
-                let y = (parseFloat(e.target.getAttribute('data-y')) || 0);
+                move(e) {
+                    let x = (parseFloat(e.target.getAttribute('data-x')) || 0);
+                    let y = (parseFloat(e.target.getAttribute('data-y')) || 0);
 
-                e.target.style.width  = e.rect.width  + 'px';
-                e.target.style.height = e.rect.height + 'px';
+                    e.target.style.width  = e.rect.width  + 'px';
+                    e.target.style.height = e.rect.height + 'px';
 
-                x += e.deltaRect.left;
-                y += e.deltaRect.top;
+                    x += e.deltaRect.left;
+                    y += e.deltaRect.top;
 
-                e.target.style.webkitTransform = e.target.style.transform = 'translate(' + x + 'px,' + y + 'px)';
+                    e.target.style.webkitTransform = e.target.style.transform = 'translate(' + x + 'px,' + y + 'px)';
 
-                e.target.setAttribute('data-x', x);
-                e.target.setAttribute('data-y', y);
-              }
+                    e.target.setAttribute('data-x', x);
+                    e.target.setAttribute('data-y', y);
+
+                    e.currentTarget.style.zIndex = current_z_index;
+                    current_z_index += 1;
+                }
             },
 
             modifiers: [
-              interact.modifiers.restrictEdges({
-                outer: 'parent'
-              }),
-              interact.modifiers.restrictSize({
-                min: { width: 200, height: 100 }
-              })
+                interact.modifiers.restrictEdges({
+                    outer: 'parent'
+                }),
+                interact.modifiers.restrictSize({
+                    min: { width: 200, height: 100 }
+                })
             ],
 
             inertia: true
-          });
+        })
+        .on('tap', (e) => {
+            e.currentTarget.style.zIndex = current_z_index;
+            current_z_index += 1;
+        });
 
     function dragMoveListener(event) {
         const target = event.target;
@@ -60,6 +63,9 @@ $(() => {
         target.style.webkitTransform = target.style.transform = 'translate(' + x + 'px,' + y + 'px)';
         target.setAttribute('data-x', x);
         target.setAttribute('data-y', y);
+
+        event.currentTarget.style.zIndex = current_z_index;
+        current_z_index += 1;
     }
 
     window.dragMoveListener = dragMoveListener;
