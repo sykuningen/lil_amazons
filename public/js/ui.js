@@ -48,12 +48,13 @@ $(() => {
                 })
             ],
 
-            inertia: true
+            inertia: false
         })
         .on('tap', (e) => {
             e.currentTarget.style.zIndex = current_z_index;
             current_z_index += 1;
-        });
+        })
+        .styleCursor(false);
 
     function dragMoveListener(event) {
         const target = event.target;

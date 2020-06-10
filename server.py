@@ -153,6 +153,22 @@ def startGame(sid):
     games[lobby_id] = game
 
 
+@sio.on('attempt_move')
+def attemptMove(sid, piece, to):
+    if not users[sid]['is_in_lobby']:
+        return
+
+    lobby_id = users[sid]['in_lobby']
+
+    if lobby_id not in lobbies:
+        return
+
+    if not lobbies[lobby_id].started:
+        return
+
+    games[lobby_id].attemptMove(sid, piece, to)
+
+
 # *============================================================= MAIN
 def main():
     eventlet.wsgi.server(eventlet.listen(('', port)), app)

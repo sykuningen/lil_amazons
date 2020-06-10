@@ -30,15 +30,12 @@ div#container {
 .draggable {
     touch-action: none;
     user-select:  none;
+
+    box-sizing: border-box;
 }
 
 div.window {
     position: absolute;
-    top:      60px;
-    left:     20px;
-
-    width:  800px;
-    height: 600px;
 
     background: rgba(0,0,0,.5);
     backdrop-filter: blur(3px);
@@ -53,6 +50,25 @@ div#window-lobby-create, div#window-game {
 div#game-container, div#game {
     width:  100%;
     height: 100%;
+}
+
+div#window-lobby-list {
+    top:     70px;
+    left:    30px;
+    width:  600px;
+    height: 300px;
+}
+div#window-lobby-create {
+    top:    450px;
+    left:    30px;
+    width:  300px;
+    height: 300px;
+}
+div#window-game {
+    top:     70px;
+    left:   700px;
+    width:  600px;
+    height: 600px;
 }
 
 p {
@@ -71,7 +87,7 @@ p.window-title {
     position: absolute;
     top:      -25px;
     left:      -3px;
-    width:    200px;
+    width:    180px;
     padding:    3px;
 
     background: linear-gradient(#FFE971, #FFC450);
