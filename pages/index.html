@@ -20,7 +20,7 @@
             <p>
                 <a href='/' id='navbar-home'>Home</a> |
                 <a href='#' id='navbar-lobby-list'>Lobby List</a> |
-                <a href='#' id='navbar-lobby-create'>Lobby Create</a> |
+                <a href='#' id='navbar-lobby-create'>Lobby</a> |
                 <a href='#' id='navbar-server-log'>Server Log</a>
 
                 <span id='navbar-online-users'></span>
@@ -36,15 +36,25 @@
             </div>
 
             <div id='window-lobby-create' class='draggable window'>
-                <p class='window-title'>Lobby Create</p>
+                <p class='window-title'>Lobby</p>
                 <p class='window-dragbox'>/</p>
 
                 <p><a href='#' id='btn-create-lobby'>Create Lobby</a></p>
                 <p>In lobby: <span id='lobby-id'>none</span></p>
-                <p class='pre'>Player list:
-<span id='lobby-players'></span></p>
 
-                <p><a href='#' id='btn-start-game'>Start Game</a></p>
+                <table>
+                    <tr class='header'>
+                        <td style='width:50%'><p>In Lobby</p></td>
+                        <td><p>Players ( <a href='#' id='btn-ready-up'>Join</a><a href='#' id='btn-ready-leave' style='display:none'>Leave</a> )</p></td>
+                    </tr>
+                    <tr>
+                        <td><p id='lobby-users'></p></td>
+                        <td><p id='lobby-plyrs'></p></td>
+                    </tr>
+                </table>
+
+                <p id='start-game-p' style='display:none'><a href='#' id='btn-start-game'>Start Game</a></p>
+                <p><a href='#' id='btn-watch-game'>Watch Game</a></p>
             </div>
 
             <div id='window-game' class='draggable window'>

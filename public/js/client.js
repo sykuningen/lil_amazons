@@ -1,5 +1,10 @@
 $(() => {
     const socket = io();
+    let my_sid = null;
+
+    socket.on('sid', (sid) => {
+        my_sid = sid;
+    });
 
     socket.on('server_stats', (stats) => {
         if (stats.online_users) {
@@ -46,14 +51,36 @@ $(() => {
     $('#window-lobby-create').on('click', 'a', (e) => {
         if (e.target.id == 'btn-create-lobby') {
             socket.emit('create_lobby');
+        } else if (e.target.id == 'btn-ready-up') {
+            socket.emit('join_players');
+        } else if (e.target.id == 'btn-ready-leave') {
+            socket.emit('leave_players');
         } else if (e.target.id == 'btn-start-game') {
             socket.emit('start_game');
+        } else if (e.target.id == 'btn-watch-game') {
+            socket.emit('watch_game');
         }
     });
 
     socket.on('update_lobby', (lobby_info) => {
         $('#lobby-id').html('#' + lobby_info.id.toString());
-        $('#lobby-players').html(lobby_info.players.join('\n'));
+        $('#lobby-users').html(lobby_info.users.join('<br />'));
+        $('#lobby-plyrs').html(lobby_info.players.join('<br />'));
+
+        if (lobby_info.owner_sid == my_sid) {
+            $('#start-game-p').show();
+        }
+
+        if (lobby_info.started) {
+            $('#btn-ready-up').hide();
+            $('#btn-ready-leave').hide();
+        } else if (lobby_info.players.includes(my_sid)) {
+            $('#btn-ready-up').hide();
+            $('#btn-ready-leave').show();
+        } else {
+            $('#btn-ready-up').show();
+            $('#btn-ready-leave').hide();
+        }
 
         $('#window-lobby-create').show();
     });

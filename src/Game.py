@@ -60,11 +60,12 @@ class Game:
             return
 
         try:
+            if player_sid not in self.lobby.players:
+                return  # This user isn't in this game
+
             piece_tile = self.board.board[piece['x']][piece['y']]
             player_n = self.lobby.players.index(player_sid)
 
-            if player_sid not in self.lobby.players:
-                return  # This user isn't in this game
             if self.current_player != player_n:
                 return  # It isn't this player's turn
             if piece['x'] < 0 or piece['y'] < 0:
@@ -118,5 +119,5 @@ class Game:
         }
 
     def emitBoard(self):
-        for p in self.lobby.players:
+        for p in self.lobby.users:
             self.sio.emit('game_data', self.toJSON(), room=p)

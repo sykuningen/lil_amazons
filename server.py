@@ -50,6 +50,7 @@ def connect(sid, env):
         'online_users': online_users
     })
 
+    sio.emit('sid', sid, room=sid)
     sio.emit('lobby_list', [lobbies[x].toJSON() for x in lobbies], room=sid)
 
 
@@ -66,15 +67,15 @@ def disconnect(sid):
         lobby = lobbies[users[sid]['in_lobby']]
 
         # Shut down the lobby if this user owned it
-        if users[sid]['is_lobby_owner']:
+        if users[sid]['is_lobby_owner'] and not lobby.started:
             lobby.shutdown(sio, users, 'disconnected')
             del lobbies[users[sid]['in_lobby']]
 
         else:
-            lobby.removePlayer(sid, 'disconnected')
+            lobby.removeUser(sid, 'disconnected')
 
             # Update the lobby for the other users in it
-            for p in lobby.players:
+            for p in lobby.users:
                 sio.emit('update_lobby', lobby.toJSON(), room=p)
 
         # Update lobby list for all users
@@ -103,7 +104,7 @@ def createLobby(sid):
         users[sid]['in_lobby'] = lobby.id
         users[sid]['is_lobby_owner'] = True
 
-        lobby.addPlayer(sid)
+        lobby.addUser(sid)
         sio.emit('update_lobby', lobby.toJSON(), room=sid)
 
         # Update lobby list for all users
@@ -121,19 +122,54 @@ def joinLobby(sid, lobby_id):
     if lobby_id in lobbies:
         lobby = lobbies[lobby_id]
 
-        if sid not in lobby.players:
-            lobby.addPlayer(sid)
+        if sid not in lobby.users:
+            lobby.addUser(sid)
 
             users[sid]['is_in_lobby'] = True
             users[sid]['in_lobby'] = lobby.id
             users[sid]['is_lobby_owner'] = False
 
             # Update the lobby for the other users in it
-            for p in lobby.players:
+            for p in lobby.users:
                 sio.emit('update_lobby', lobby.toJSON(), room=p)
 
-            # Update lobby list for all users
-            sio.emit('lobby_list', [lobbies[x].toJSON() for x in lobbies])
+
+@sio.on('join_players')
+def joinPlayers(sid):
+    if not users[sid]['is_in_lobby']:
+        return
+
+    lobby_id = int(users[sid]['in_lobby'])
+
+    if lobby_id in lobbies:
+        lobby = lobbies[lobby_id]
+        lobby.addAsPlayer(sid)
+
+        # Update the lobby for the other users in it
+        for p in lobby.users:
+            sio.emit('update_lobby', lobby.toJSON(), room=p)
+
+        # Update lobby list for all users
+        sio.emit('lobby_list', [lobbies[x].toJSON() for x in lobbies])
+
+
+@sio.on('leave_players')
+def leavePlayers(sid):
+    if not users[sid]['is_in_lobby']:
+        return
+
+    lobby_id = int(users[sid]['in_lobby'])
+
+    if lobby_id in lobbies:
+        lobby = lobbies[lobby_id]
+        lobby.removeAsPlayer(sid)
+
+        # Update the lobby for the other users in it
+        for p in lobby.users:
+            sio.emit('update_lobby', lobby.toJSON(), room=p)
+
+        # Update lobby list for all users
+        sio.emit('lobby_list', [lobbies[x].toJSON() for x in lobbies])
 
 
 @sio.on('start_game')
@@ -156,6 +192,18 @@ def startGame(sid):
 
     game = Game(sio, lobbies[lobby_id])
     games[lobby_id] = game
+
+    # Update the lobby for the other users in it
+    for p in game.lobby.users:
+        sio.emit('update_lobby', game.lobby.toJSON(), room=p)
+
+
+@sio.on('watch_game')
+def watchGame(sid):
+    lobby_id = users[sid]['in_lobby']
+
+    if lobby_id in games:
+        games[lobby_id].emitBoard()
 
 
 @sio.on('attempt_move')
