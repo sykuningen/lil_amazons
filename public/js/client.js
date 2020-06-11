@@ -128,6 +128,8 @@ $(() => {
                     grp_board_grid.beginFill(0x3B7080, .5);
                 } else if (board.board[x][y] == -2) {
                     grp_board_grid.beginFill(0x3B7080, 1);
+                } else if ((x + y) % 2 == 0) {
+                    grp_board_grid.beginFill(0x000000, .2);
                 }
 
                 // const pos_x = x * tile_size + board_offset + offset_x;
@@ -135,19 +137,17 @@ $(() => {
                 const pos_x = x * tile_size + board_offset;
                 const pos_y = y * tile_size + board_offset;
 
-                grp_board_grid.drawRect(pos_x, pos_y, tile_size, tile_size);
+                grp_board_grid.drawRect(pos_x-1, pos_y-1, tile_size+1, tile_size+1);
                 // offset_y--;
 
-                if ((x == selected.x && y == selected.y) || board.board[x][y] == -2) {
-                    grp_board_grid.endFill();
-                }
+                grp_board_grid.endFill();
 
                 // Is this tile occupied?
                 if (board.board[x][y] >= 0) {
                     grp_player_pieces[board.board[x][y]].drawCircle(
                         pos_x + tile_size/2,
                         pos_y + tile_size/2,
-                        tile_size/3 );
+                        tile_size/4 );
                 }
             }
 
