@@ -16,6 +16,7 @@
     </head>
 
     <body>
+        <!-- =================================================== NAVBAR -->
         <div id='navbar'>
             <p>
                 <a href='/' id='navbar-home'>Home</a> |
@@ -27,56 +28,81 @@
             </p>
         </div>
 
+
+        <!-- =================================================== LOGIN WINDOW -->
+        <div id='window-login' class='draggable window'>
+            <p>Enter a username</p>
+            <input type='text' id='login-username'>
+            <input type='submit' id='btn-login' value='Play'>
+        </div>
+
+
+        <!-- =================================================== MAIN CONTAINER -->
         <div id='container'>
             <div id='window-lobby-list' class='draggable window'>
                 <p class='window-title'>Lobby List</p>
-                <p class='window-dragbox'>/</p>
+                <p class='window-dragbox'>☰</p>
 
-                <div id='lobby-list'></div>
+                <div class='window-content'>
+                    <div id='lobby-list'></div>
+                </div>
             </div>
+
 
             <div id='window-lobby-create' class='draggable window'>
                 <p class='window-title'>Lobby</p>
-                <p class='window-dragbox'>/</p>
+                <p class='window-dragbox'>☰</p>
 
-                <p><a href='#' id='btn-create-lobby'>Create Lobby</a></p>
-                <p>In lobby: <span id='lobby-id'>none</span></p>
+                <div class='window-content'>
+                    <p><a href='#' id='btn-create-lobby'>Create Lobby</a></p>
+                    <p>In lobby: <span id='lobby-id'>none</span></p>
 
-                <table>
-                    <tr class='header'>
-                        <td style='width:50%'><p>In Lobby</p></td>
-                        <td><p>Players ( <a href='#' id='btn-ready-up'>Join</a><a href='#' id='btn-ready-leave' style='display:none'>Leave</a> )</p></td>
-                    </tr>
-                    <tr>
-                        <td><p id='lobby-users'></p></td>
-                        <td><p id='lobby-plyrs'></p></td>
-                    </tr>
-                </table>
+                    <table>
+                        <tr class='header'>
+                            <td style='width:50%'><p>In Lobby</p></td>
+                            <td><p>Players ( <a href='#' id='btn-ready-up'>Join</a><a href='#' id='btn-ready-leave' style='display:none'>Leave</a> )</p></td>
+                        </tr>
+                        <tr>
+                            <td><p id='lobby-users'></p></td>
+                            <td><p id='lobby-plyrs'></p></td>
+                        </tr>
+                    </table>
 
-                <p id='start-game-p' style='display:none'><a href='#' id='btn-start-game'>Start Game</a></p>
-                <p><a href='#' id='btn-watch-game'>Watch Game</a></p>
+                    <p id='start-game-p' style='display:none'>
+                        <a href='#' id='btn-start-game'>Start Game</a>
+                    </p>
+                    <p>
+                        <a href='#' id='btn-watch-game'>Watch/Re-join Game</a>
+                    </p>
+                </div>
             </div>
+
 
             <div id='window-game' class='draggable window'>
                 <p class='window-title'>Game</p>
-                <p class='window-dragbox'>/</p>
+                <p class='window-dragbox'>☰</p>
 
-                <div id='game-container'>
-                    <div id='game'></div>
+                <div class='window-content'>
+                    <div id='game-container'>
+                        <div id='game'></div>
+                    </div>
                 </div>
             </div>
+
 
             <div id='window-server-log' class='draggable window'>
                 <p class='window-title'>Server Log</p>
 
-                <p><a href='#' id='btn-log-connect'>Connect</a></p>
+                <div class='window-content'>
+                    <p><a href='#' id='btn-log-connect'>Connect</a></p>
 
-                <table id='log-messages'>
-                    <tr class='header'>
-                        <td><p>Sender</p></td>
-                        <td><p>Message</p></td>
-                    </tr>
-                </table>
+                    <table id='log-messages'>
+                        <tr class='header'>
+                            <td style='width:100px'><p>Sender</p></td>
+                            <td><p>Message</p></td>
+                        </tr>
+                    </table>
+                </div>
             </div>
         </div>
     </body>

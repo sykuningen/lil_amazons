@@ -20,7 +20,7 @@ class Board:
             self.board[x][y] = player_n
 
         except IndexError:
-            pass
+            pass  # TODO: Dispatch an error
 
     def toJSON(self):
         return {
@@ -35,46 +35,49 @@ class Game:
         self.sio = sio
 
         self.lobby = lobby
-        self.id = lobby.id
-
-        self.lobby.setStarted()
-
-        self.logstr = 'Game#' + str(self.id)
-        logger.log(self.logstr, 'Created')
+        self.id = lobby.id  # Game IDs match their associated lobby ID
 
         # Initialize the game board
         self.board = Board(10, 10)
         self.current_player = 0
-        self.lmp = None  # Last moved piece
-        self.burning = False
+        self.lmp = None       # Last moved piece
+        self.burning = False  # Does current player have to burn a tile now?
 
         # Initialize game pieces
         self.board.placePiece(0, (0, 0))
         self.board.placePiece(1, (9, 9))
 
+        # Finalize setup
+        self.lobby.setStarted()
         self.emitBoard()
 
-    def attemptMove(self, player_sid, piece, to):
+        # Notify about game start
+        self.logstr = f'Game#{str(self.id)}'
+        player_list = str([p.username for p in lobby.players])
+        logger.log(self.logstr, f'Game started (players: {player_list})')
+
+    def attemptMove(self, player, piece, to):
         if self.burning:
-            self.attemptBurn(player_sid, to)
+            self.attemptBurn(player, to)
             return
 
         try:
-            if player_sid not in self.lobby.players:
+            if player not in self.lobby.players:
                 return  # This user isn't in this game
 
+            player_n = self.lobby.players.index(player)
             piece_tile = self.board.board[piece['x']][piece['y']]
-            player_n = self.lobby.players.index(player_sid)
 
             if self.current_player != player_n:
                 return  # It isn't this player's turn
             if piece['x'] < 0 or piece['y'] < 0:
                 return  # Prevent weird list indexing
             if piece_tile != player_n:
-                return  # No piece here, or piece belongs to other player
+                return  # No piece here, or piece belongs to another player
             if not AmazonsLogic().validMove(self.board, piece, to):
                 return  # This isn't a valid move
 
+            # Move the piece
             self.board.board[to['x']][to['y']] = piece_tile
             self.board.board[piece['x']][piece['y']] = BLANK
 
@@ -84,13 +87,13 @@ class Game:
             self.emitBoard()
 
         except IndexError:
-            pass
+            pass  # TODO: Dispatch an error
 
-    def attemptBurn(self, player_sid, to):
+    def attemptBurn(self, player, to):
         try:
-            player_n = self.lobby.players.index(player_sid)
+            player_n = self.lobby.players.index(player)
 
-            if player_sid not in self.lobby.players:
+            if player not in self.lobby.players:
                 return  # This user isn't in this game
             if self.current_player != player_n:
                 return  # It isn't this player's turn
@@ -109,7 +112,7 @@ class Game:
             self.emitBoard()
 
         except IndexError:
-            pass
+            pass  # TODO: Dispatch an error
 
     def toJSON(self):
         return {
@@ -118,6 +121,9 @@ class Game:
             'board': self.board.toJSON()
         }
 
-    def emitBoard(self):
-        for p in self.lobby.users:
-            self.sio.emit('game_data', self.toJSON(), room=p)
+    def emitBoard(self, to=None):
+        if to:
+            self.sio.emit('game_data', self.toJSON(), room=to)
+        else:
+            for p in self.lobby.users:
+                self.sio.emit('game_data', self.toJSON(), room=p.sid)

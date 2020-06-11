@@ -2,52 +2,54 @@ from .Logger import logger
 
 
 class Lobby:
-    def __init__(self, lobby_id, owner_sid):
+    def __init__(self, lobby_id, owner):
         self.id = lobby_id
-        self.owner_sid = owner_sid
+        self.owner = owner
 
-        self.users = []
-        self.players = []
-        self.started = False
+        self.users = []       # All users currently in the lobby
+        self.players = []     # Users that are in the actual players list
+        self.started = False  # Whether the game has started
 
-        self.logstr = 'Lobby#' + str(self.id)
-        logger.log(self.logstr, 'Created')
+        # Notify about lobby creation
+        self.logstr = f'Lobby#{self.id}'
+        logger.log(self.logstr, f'Lobby created (owner: {owner.username})')
 
-    def addUser(self, player_sid):
-        if player_sid not in self.users:
-            self.users.append(player_sid)
+    def addUser(self, user):
+        if user not in self.users:
+            self.users.append(user)
 
-        logger.log(self.logstr, 'User joined: ' + str(player_sid))
+        logger.log(self.logstr, 'User joined: ' + user.username)
 
-    def removeUser(self, player_sid, reason):
-        if player_sid in self.users:
-            self.users.remove(player_sid)
+    def removeUser(self, user, reason):
+        if user in self.users:
+            self.users.remove(user)
 
-        logger.log(self.logstr, 'User ' + reason + ': ' + str(player_sid))
+        logger.log(self.logstr, f'User left: {user.username} ({reason})')
 
-    def addAsPlayer(self, player_sid):
+    def addAsPlayer(self, user):
+        # Can't change players once the game has started
         if self.started:
             return
 
-        if player_sid in self.users and player_sid not in self.players:
-            self.players.append(player_sid)
+        # Ensure that the user is in the lobby
+        if user in self.users and user not in self.players:
+            self.players.append(user)
 
-    def removeAsPlayer(self, player_sid):
+    def removeAsPlayer(self, user):
+        # Can't change players once the game has started
         if self.started:
             return
 
-        if player_sid in self.players:
-            self.players.remove(player_sid)
+        # Ensure that the user is in the players list
+        if user in self.players:
+            self.players.remove(user)
 
-    def shutdown(self, sio, users, reason):
-        message = 'Host ' + reason + '. Shutting down ('
-        message += str(len(self.players)) + ' users affected)'
-
-        logger.log(self.logstr, message)
+    def shutdown(self, sio, reason):
+        logger.log(self.logstr, f'Host {reason}. Shutting down lobby')
 
         for p in self.users:
-            users[p]['is_in_lobby'] = False
-            sio.emit('leave_lobby', room=p)
+            p.lobby = None
+            sio.emit('leave_lobby', room=p.sid)
 
     def setStarted(self):
         self.started = True
@@ -55,8 +57,10 @@ class Lobby:
     def toJSON(self):
         return {
             'id': self.id,
-            'owner_sid': self.owner_sid,
-            'users': self.users,
-            'players': self.players,
+            'owner_sid': self.owner.sid,
+            'users': [u.sid for u in self.users],
+            'players': [p.sid for p in self.players],
+            'user_usernames': [u.username for u in self.users],
+            'player_usernames': [p.username for p in self.players],
             'started': self.started
         }
