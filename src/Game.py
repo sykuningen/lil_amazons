@@ -42,6 +42,8 @@ class Game:
         # Initialize the game board
         self.board = Board(10, 10)
         self.current_player = 0
+        self.lmp = None  # Last moved piece
+        self.burning = False
 
         # Initialize game pieces
         self.board.placePiece(0, (0, 0))
@@ -50,6 +52,10 @@ class Game:
         self.emitBoard()
 
     def attemptMove(self, player_sid, piece, to):
+        if self.burning:
+            self.attemptBurn(player_sid, to)
+            return
+
         try:
             piece_tile = self.board.board[piece['x']][piece['y']]
             player_n = self.lobby.players.index(player_sid)
@@ -68,7 +74,30 @@ class Game:
             self.board.board[to['x']][to['y']] = piece_tile
             self.board.board[piece['x']][piece['y']] = BLANK
 
+            self.lmp = {'x': to['x'], 'y': to['y']}
+            self.burning = True  # Player must now burn a tile
+
+            self.emitBoard()
+
+        except IndexError:
+            pass
+
+    def attemptBurn(self, player_sid, to):
+        try:
+            player_n = self.lobby.players.index(player_sid)
+
+            if player_sid not in self.lobby.players:
+                return  # This user isn't in this game
+            if self.current_player != player_n:
+                return  # It isn't this player's turn
+            if not AmazonsLogic().validMove(self.board, self.lmp, to):
+                return  # This isn't a valid burn
+
+            self.board.board[to['x']][to['y']] = BURNED
+
             # Next player's turn
+            self.burning = False
+
             self.current_player += 1
             if self.current_player == len(self.lobby.players):
                 self.current_player = 0

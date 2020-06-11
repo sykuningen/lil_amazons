@@ -111,6 +111,8 @@ $(() => {
             for (let y = 0; y < board.height; y++) {
                 if (x == selected.x && y == selected.y) {
                     grp_board_grid.beginFill(0x3B7080, .5);
+                } else if (board.board[x][y] == -2) {
+                    grp_board_grid.beginFill(0x3B7080, 1);
                 }
 
                 // const pos_x = x * tile_size + board_offset + offset_x;
@@ -121,7 +123,7 @@ $(() => {
                 grp_board_grid.drawRect(pos_x, pos_y, tile_size, tile_size);
                 // offset_y--;
 
-                if (x == selected.x && y == selected.y) {
+                if ((x == selected.x && y == selected.y) || board.board[x][y] == -2) {
                     grp_board_grid.endFill();
                 }
 
