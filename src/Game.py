@@ -1,3 +1,4 @@
+from .Logger import logger
 from .amazons_logic import AmazonsLogic
 
 
@@ -37,7 +38,9 @@ class Game:
         self.id = lobby.id
 
         self.lobby.setStarted()
-        print('Game ID#' + str(self.id) + ' started')
+
+        self.logstr = 'Game#' + str(self.id)
+        logger.log(self.logstr, 'Created')
 
         # Initialize the game board
         self.board = Board(10, 10)

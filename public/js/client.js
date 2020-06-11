@@ -7,6 +7,18 @@ $(() => {
         }
     });
 
+    // Logging
+    $('#window-server-log').on('click', 'a', (e) => {
+        if (e.target.id == 'btn-log-connect') {
+            socket.emit('connect_log');
+        }
+    });
+
+    socket.on('log_message', (data) => {
+        $('#btn-log-connect').hide();
+        $('#log-messages tr:nth-child(1)').after('<tr><td><p>' + data.sender + '</p></td><td><p>' + data.message + '</p></td></tr>');
+    });
+
     // Lobby List
     socket.on('lobby_list', (lobbies) => {
         let html = '<table><tr class="header"><td><p>Lobby ID</p></td><td><p>Players</p></td><td></td></tr>';
@@ -16,7 +28,7 @@ $(() => {
                 += '<tr><td><p>'
                 + lobbies[i].id
                 + '</p></td><td><p>'
-                + lobbies[i].players
+                + lobbies[i].players.join('<br />')
                 + '</p></td><td><p>'
                 + '<a href="#" id="' + lobbies[i].id.toString() + '">Join</a>'
                 + '</p></td></tr>';
@@ -68,14 +80,17 @@ $(() => {
 
 
     // *======================================================== PIXIJS
+    const width  = 600;
+    const height = 600;
+
     const app = new PIXI.Application({
-        width:  800,
-        height: 600,
+        width:  width,
+        height: height,
         antialias:   true,
         transparent: true });
 
-    const board_offset = 20;
-    const tile_size    = 50;
+    const board_offset = 50;
+    const tile_size    = (width - 100) / 10;
 
     const grp_board_grid = new PIXI.Graphics();
     app.stage.addChild(grp_board_grid);

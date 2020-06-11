@@ -20,7 +20,8 @@
             <p>
                 <a href='/' id='navbar-home'>Home</a> |
                 <a href='#' id='navbar-lobby-list'>Lobby List</a> |
-                <a href='#' id='navbar-lobby-create'>Lobby Create</a>
+                <a href='#' id='navbar-lobby-create'>Lobby Create</a> |
+                <a href='#' id='navbar-server-log'>Server Log</a>
 
                 <span id='navbar-online-users'></span>
             </p>
@@ -29,11 +30,14 @@
         <div id='container'>
             <div id='window-lobby-list' class='draggable window'>
                 <p class='window-title'>Lobby List</p>
+                <p class='window-dragbox'>/</p>
+
                 <div id='lobby-list'></div>
             </div>
 
             <div id='window-lobby-create' class='draggable window'>
                 <p class='window-title'>Lobby Create</p>
+                <p class='window-dragbox'>/</p>
 
                 <p><a href='#' id='btn-create-lobby'>Create Lobby</a></p>
                 <p>In lobby: <span id='lobby-id'>none</span></p>
@@ -45,10 +49,24 @@
 
             <div id='window-game' class='draggable window'>
                 <p class='window-title'>Game</p>
+                <p class='window-dragbox'>/</p>
 
                 <div id='game-container'>
                     <div id='game'></div>
                 </div>
+            </div>
+
+            <div id='window-server-log' class='draggable window'>
+                <p class='window-title'>Server Log</p>
+
+                <p><a href='#' id='btn-log-connect'>Connect</a></p>
+
+                <table id='log-messages'>
+                    <tr class='header'>
+                        <td><p>Sender</p></td>
+                        <td><p>Message</p></td>
+                    </tr>
+                </table>
             </div>
         </div>
     </body>

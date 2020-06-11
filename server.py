@@ -2,6 +2,7 @@ import eventlet
 import os
 import socketio
 
+from src.Logger import logger
 from src.Lobby import Lobby
 from src.Game import Game
 
@@ -22,6 +23,9 @@ port = 8000
 if 'PORT' in os.environ.keys():
     port = int(os.environ['PORT'])
 
+# Logging
+logger.setSIO(sio)
+
 # Server runtime data
 online_users = 0
 users = {}
@@ -34,8 +38,6 @@ games = {}
 # *============================================================= SOCKET.IO
 @sio.on('connect')
 def connect(sid, env):
-    print(f'Connection from SID {sid}')
-
     users[sid] = {
         'is_in_lobby':    False,
         'in_lobby':       0,
@@ -53,8 +55,6 @@ def connect(sid, env):
 
 @sio.on('disconnect')
 def disconnect(sid):
-    print(f'Disconnection from SID {sid}')
-
     global online_users
     online_users -= 1
     sio.emit('server_stats', {
@@ -67,14 +67,11 @@ def disconnect(sid):
 
         # Shut down the lobby if this user owned it
         if users[sid]['is_lobby_owner']:
-            for p in lobby.players:
-                users[p]['is_in_lobby'] = False
-                sio.emit('leave_lobby', room=p)
-
+            lobby.shutdown(sio, users, 'disconnected')
             del lobbies[users[sid]['in_lobby']]
 
         else:
-            lobby.players.remove(sid)
+            lobby.removePlayer(sid, 'disconnected')
 
             # Update the lobby for the other users in it
             for p in lobby.players:
@@ -82,6 +79,14 @@ def disconnect(sid):
 
         # Update lobby list for all users
         sio.emit('lobby_list', [lobbies[x].toJSON() for x in lobbies])
+
+    logger.removeListener(sid)
+
+
+@sio.on('connect_log')
+def connectLog(sid):
+    logger.addListener(sid)
+    logger.log('server', 'Connected to logging server: ' + str(sid))
 
 
 # Lobby

@@ -37,13 +37,17 @@ div#container {
 div.window {
     position: absolute;
 
+    overflow: scroll;
+    scrollbar-width: none;
+
     background: rgba(0,0,0,.5);
     backdrop-filter: blur(3px);
 
-    border: 3px #3B7080 solid;
+    border:     3px #3B7080 solid;
+    box-shadow: 10px 10px 0 0 rgba(0,0,0,.2);
 }
 
-div#window-lobby-create, div#window-game {
+div#window-lobby-create, div#window-game, div#window-server-log {
     display: none;
 }
 
@@ -53,22 +57,28 @@ div#game-container, div#game {
 }
 
 div#window-lobby-list {
-    top:     70px;
-    left:    30px;
-    width:  600px;
-    height: 300px;
+    top:     50px;
+    left:    50px;
+    width:  500px;
+    height: 200px;
 }
 div#window-lobby-create {
-    top:    450px;
-    left:    30px;
-    width:  300px;
-    height: 300px;
+    top:    255px;
+    left:    50px;
+    width:  500px;
+    height: 200px;
 }
 div#window-game {
-    top:     70px;
-    left:   700px;
-    width:  600px;
-    height: 600px;
+    top:     50px;
+    left:   555px;
+    width:   auto;
+    height:  auto;
+}
+div#window-server-log {
+    bottom:  20px;
+    left:    20px;
+    right:   20px;
+    height: 200px;
 }
 
 p {
@@ -85,12 +95,25 @@ p.pre {
 
 p.window-title {
     position: absolute;
-    top:      -25px;
-    left:      -3px;
-    width:    180px;
+    bottom:     0px;
+    right:      0px;
+    width:    200px;
     padding:    3px;
 
     background: linear-gradient(#FFE971, #FFC450);
+
+    color:       #333;
+    text-align:  center;
+    font-weight: bold
+}
+
+p.window-dragbox {
+    position: absolute;
+    top:       0px;
+    right:     0px;
+    width:    10px;
+
+    background: linear-gradient(#FFC450, #FFE971);
 
     color:       #333;
     text-align:  center;
@@ -108,8 +131,17 @@ a:hover {
 
 table {
     width: 100%;
+    border-spacing: 0;
+}
+
+tr.header {
+    background: rgba(0,0,0,.5);
 }
 
 tr.header p {
     font-weight: bold;
+}
+
+tr:nth-child(even) {
+    background: rgba(0,0,0,.2);
 }

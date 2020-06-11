@@ -6,17 +6,19 @@ $(() => {
         .draggable({
             modifiers: [
                 interact.modifiers.restrictRect({
-                    restriction: 'parent',
+                    restriction: 'html',
                     endOnly: false
                 })
             ],
 
             listeners: {
                 move: dragMoveListener
-            }
+            },
+
+            allowFrom: '.window-title'
         })
         .resizable({
-            edges: { left: true, right: true, bottom: true, top: true },
+            edges: { right: true, top: true },
 
             listeners: {
                 move(e) {
@@ -44,17 +46,17 @@ $(() => {
                     outer: 'parent'
                 }),
                 interact.modifiers.restrictSize({
-                    min: { width: 200, height: 100 }
+                    min: { width: 200, height: 50 }
                 })
             ],
 
-            inertia: false
+            inertia: false,
+            allowFrom: '.window-dragbox'
         })
         .on('tap', (e) => {
             e.currentTarget.style.zIndex = current_z_index;
             current_z_index += 1;
-        })
-        .styleCursor(false);
+        });
 
     function dragMoveListener(event) {
         const target = event.target;
