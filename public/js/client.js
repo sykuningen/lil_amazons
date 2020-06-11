@@ -59,9 +59,11 @@ $(() => {
     socket.on('game_data', game_data => {
         $('#window-game').show();
         $('#game').html(app.view);
-        renderBoard(game_data.board);
 
         current_board = game_data.board;
+        selected      = { x: -1, y: -1 };
+
+        renderBoard(current_board);
     });
 
 
@@ -154,7 +156,6 @@ $(() => {
             renderBoard(current_board);
         } else {
             socket.emit('attempt_move', selected, { x: tile_x, y: tile_y });
-            selected = { x: -1, y: -1 };
         }
     });
 });

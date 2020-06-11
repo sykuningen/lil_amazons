@@ -1,3 +1,6 @@
+from .amazons_logic import AmazonsLogic
+
+
 # Tile meanings
 BLANK = -1
 BURNED = -2
@@ -47,19 +50,28 @@ class Game:
         self.emitBoard()
 
     def attemptMove(self, player_sid, piece, to):
-        if player_sid not in self.lobby.players:
-            return
-
-        if piece['x'] < 0 or piece['y'] < 0:
-            return
-
         try:
             piece_tile = self.board.board[piece['x']][piece['y']]
+            player_n = self.lobby.players.index(player_sid)
 
-            # Ensure that a piece exists at the given position
-            if piece_tile >= 0:
-                self.board.board[to['x']][to['y']] = piece_tile
-                self.board.board[piece['x']][piece['y']] = BLANK
+            if player_sid not in self.lobby.players:
+                return  # This user isn't in this game
+            if self.current_player != player_n:
+                return  # It isn't this player's turn
+            if piece['x'] < 0 or piece['y'] < 0:
+                return  # Prevent weird list indexing
+            if piece_tile != player_n:
+                return  # No piece here, or piece belongs to other player
+            if not AmazonsLogic().validMove(self.board, piece, to):
+                return  # This isn't a valid move
+
+            self.board.board[to['x']][to['y']] = piece_tile
+            self.board.board[piece['x']][piece['y']] = BLANK
+
+            # Next player's turn
+            self.current_player += 1
+            if self.current_player == len(self.lobby.players):
+                self.current_player = 0
 
             self.emitBoard()
 
