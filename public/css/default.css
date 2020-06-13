@@ -144,6 +144,17 @@ p#game-info-id {
 p#game-info-burning {
     font-style: italic;
 }
+p#game-info-regions {
+    padding: 10px;
+    font:    10px monospace;
+
+    line-height: 120%;
+}
+
+table#log-messages tr td p {
+    padding: 3px;
+    font:    9px monospace;
+}
 
 a {
     text-decoration: none;
@@ -153,16 +164,18 @@ a:hover {
     text-decoration: underline;
 }
 
+hr {
+    margin-top: 10px;
+
+    border:        none;
+    border-bottom: 1px #3B7080 solid;
+}
+
 
 /* *============================================================ TABLES */
 table {
     width: 100%;
     border-spacing: 0;
-}
-
-table#log-messages tr td p {
-    padding: 3px;
-    font:    9px monospace;
 }
 
 tr.header {

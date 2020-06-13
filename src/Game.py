@@ -123,7 +123,8 @@ class Game:
             'board': self.board.toJSON(),
             'current_player': self.current_player,
             'lmp': self.lmp,
-            'burning': self.burning
+            'burning': self.burning,
+            'regions': AmazonsLogic().regions(self.board)
         }
 
     def emitBoard(self, to=None):

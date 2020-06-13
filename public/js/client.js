@@ -148,6 +148,22 @@ $(() => {
         } else {
             $('#game-info-burning').html('Move a piece');
         }
+
+        // Region info
+        let region_text = '';
+
+        for (let i in game_data.regions) {
+            region_text += i.toString() + ') ';
+            region_text += game_data.regions[i].tiles.length.toString() + ' tiles';
+
+            if (game_data.regions[i].owner != null) {
+                region_text += ' - owned by ' + game_data.lobby.player_usernames[game_data.regions[i].owner];
+            }
+
+            region_text += '<br />';
+        }
+
+        $('#game-info-regions').html(region_text);
     });
 
     socket.on('select_piece', (piece) => {
