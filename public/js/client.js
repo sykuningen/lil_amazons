@@ -139,15 +139,34 @@ $(() => {
         $('#window-game-info').show();
         $('#game-info-id').html('Game#' + game_data.id.toString());
 
-        const turn_colour = player_colours_hex[game_data.current_player];
-        const turn_string = "<span style='font-weight:bold;color:" + turn_colour + "'>" + game_data.lobby.player_usernames[game_data.current_player] + "</span>'s turn"
-        $('#game-info-turn').html(turn_string);
+        if (game_data.ended) {
+            const colour = player_colours_hex[game_data.winner];
+            const text   = "<span style='font-weight:bold;color:" + colour + "'>" + game_data.lobby.player_usernames[game_data.winner] + "</span> wins!";
+            $('#game-info-turn').html(text);
 
-        if (game_data.burning) {
-            $('#game-info-burning').html('Select a tile to burn');
-        } else {
-            $('#game-info-burning').html('Move a piece');
+            $('#game-info-burning').html('');
         }
+        else {
+            const turn_colour = player_colours_hex[game_data.current_player];
+            const turn_string = "<span style='font-weight:bold;color:" + turn_colour + "'>" + game_data.lobby.player_usernames[game_data.current_player] + "</span>'s turn";
+            $('#game-info-turn').html(turn_string);
+
+            if (game_data.burning) {
+                $('#game-info-burning').html('Select a tile to burn');
+            } else {
+                $('#game-info-burning').html('Move a piece');
+            }
+        }
+
+        // Score info
+        let score_text = '';
+
+        for (let i in game_data.scores) {
+            const colour = player_colours_hex[parseInt(i)];
+            score_text += "<span style='font-weight:bold;color:" + colour + "'>" + game_data.scores[i].toString() + ' - ' + game_data.lobby.player_usernames[parseInt(i)] + '</span><br />';
+        }
+
+        $('#game-info-scores').html(score_text);
 
         // Region info
         let region_text = '';

@@ -116,3 +116,17 @@ class AmazonsLogic:
                 regions[r]['owner'] = owner[0]
 
         return regions
+
+    def calculateScores(self, region_info):
+        scores = {}
+
+        for r in region_info:
+            if region_info[r]['owner'] is not None:
+                o = region_info[r]['owner']
+
+                if o in scores:
+                    scores[o] += len(region_info[r]['tiles'])
+                else:
+                    scores[o] = len(region_info[r]['tiles'])
+
+        return scores

@@ -47,6 +47,13 @@ class Game:
         self.board.placePiece(0, (0, 0))
         self.board.placePiece(1, (9, 9))
 
+        # Game analysis stuff
+        self.regions = None
+        self.scores = None
+
+        self.ended = False
+        self.winner = None
+
         # Finalize setup
         self.lobby.setStarted()
         self.emitBoard()
@@ -57,6 +64,9 @@ class Game:
         logger.log(self.logstr, f'Game started (players: {player_list})')
 
     def attemptMove(self, player, piece, to):
+        if self.ended:
+            return
+
         if self.burning:
             self.attemptBurn(player, to)
             return
@@ -110,11 +120,29 @@ class Game:
             if self.current_player == len(self.lobby.players):
                 self.current_player = 0
 
+            self.analyzeGameState()
+
             self.emitBoard()
             self.sio.emit('select_piece', {'x': -1, 'y': -1}, player.sid)
 
         except IndexError:
             pass  # TODO: Dispatch an error
+
+    def analyzeGameState(self):
+        self.regions = AmazonsLogic().regions(self.board)
+        self.scores = AmazonsLogic().calculateScores(self.regions)
+
+        total_tiles = 0
+        for r in self.regions:
+            total_tiles += len(self.regions[r]['tiles'])
+
+        total_score = 0
+        for s in self.scores:
+            total_score += self.scores[s]
+
+        if total_score == total_tiles:
+            self.ended = True
+            self.winner = max(self.scores, key=self.scores.get)
 
     def toJSON(self):
         return {
@@ -124,7 +152,10 @@ class Game:
             'current_player': self.current_player,
             'lmp': self.lmp,
             'burning': self.burning,
-            'regions': AmazonsLogic().regions(self.board)
+            'regions': self.regions,
+            'scores': self.scores,
+            'ended': self.ended,
+            'winner': self.winner
         }
 
     def emitBoard(self, to=None):

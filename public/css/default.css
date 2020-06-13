@@ -138,16 +138,26 @@ p {
     color: white;
 }
 
+p.header {
+    background:  rgba(0,0,0,.5);
+    font-weight: bold;
+}
+
 p#game-info-id {
     font-weight: bold;
+}
+p#game-info-turn {
+    margin-top:    5px;
+    padding-left: 10px;
 }
 p#game-info-burning {
     font-style: italic;
 }
-p#game-info-regions {
-    padding: 10px;
-    font:    10px monospace;
+p#game-info-scores, p#game-info-regions {
+    padding:    10px;
+    background: rgba(0,0,0,.2);
 
+    font:        10px monospace;
     line-height: 120%;
 }
 
@@ -165,7 +175,7 @@ a:hover {
 }
 
 hr {
-    margin-top: 10px;
+    margin-top: 20px;
 
     border:        none;
     border-bottom: 1px #3B7080 solid;
