@@ -73,7 +73,7 @@ $(() => {
             socket.emit('add_ai_player');
         } else if (e.target.id == 'btn-start-game') {
             $('#start-game-p').hide();
-            socket.emit('start_game');
+            socket.emit('start_game', $('#lobby-game-config').html());
         } else if (e.target.id == 'btn-watch-game') {
             socket.emit('watch_game');
         }

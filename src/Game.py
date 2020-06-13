@@ -1,3 +1,5 @@
+import json
+
 from .Logger import logger
 from .amazons_logic import AmazonsLogic
 
@@ -31,7 +33,7 @@ class Board:
 
 
 class Game:
-    def __init__(self, sio, lobby):
+    def __init__(self, sio, lobby, config):
         self.sio = sio
 
         self.lobby = lobby
@@ -44,8 +46,10 @@ class Game:
         self.burning = False  # Does current player have to burn a tile now?
 
         # Initialize game pieces
-        self.board.placePiece(0, (0, 0))
-        self.board.placePiece(1, (9, 9))
+        self.config = json.loads(config.replace('\'', '"'))
+
+        for p in self.config['pieces']:
+            self.board.placePiece(p['owner'], (p['x'], p['y']))
 
         # Game analysis stuff
         self.regions = None

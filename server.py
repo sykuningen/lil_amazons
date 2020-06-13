@@ -216,7 +216,7 @@ def addAiPlayer(sid):
 
 # ============================================================== Game
 @sio.on('start_game')
-def startGame(sid):
+def startGame(sid, game_config):
     # Ensure that the user has permission to start the game
     if not users[sid].lobby:
         return
@@ -228,7 +228,7 @@ def startGame(sid):
         return
 
     # Create a new game
-    game = Game(sio, users[sid].lobby)
+    game = Game(sio, users[sid].lobby, game_config)
     games[users[sid].lobby.id] = game
 
     # Update the lobby for the other users in it

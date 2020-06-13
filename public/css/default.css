@@ -107,7 +107,7 @@ div#window-lobby-create {
     top:    260px;
     left:    50px;
     width:  500px;
-    height: 200px;
+    height: 400px;
 }
 div#window-game {
     top:     50px;
@@ -205,7 +205,7 @@ td {
 
 
 /* *============================================================ FORMS */
-input {
+input, textarea {
     width:   100%;
     padding: 5px;
 
@@ -230,4 +230,12 @@ input[type='submit'] {
 input[type='submit']:hover {
     border: 1px #FFE971 solid;
     cursor: pointer;
+}
+
+textarea {
+    height: 200px;
+    border: none;
+
+    font:        10px monospace;
+    line-height: 120%;
 }
