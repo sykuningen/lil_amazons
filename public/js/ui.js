@@ -46,7 +46,7 @@ $(() => {
                     outer: 'parent'
                 }),
                 interact.modifiers.restrictSize({
-                    min: { width: 200, height: 50 }
+                    min: { width: 212, height: 50 }
                 })
             ],
 

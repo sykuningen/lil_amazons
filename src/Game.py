@@ -118,7 +118,10 @@ class Game:
         return {
             'id': self.id,
             'lobby': self.lobby.toJSON(),
-            'board': self.board.toJSON()
+            'board': self.board.toJSON(),
+            'current_player': self.current_player,
+            'lmp': self.lmp,
+            'burning': self.burning
         }
 
     def emitBoard(self, to=None):

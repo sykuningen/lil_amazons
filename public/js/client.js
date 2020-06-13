@@ -118,6 +118,9 @@ $(() => {
 
 
     // *======================================================== GAME
+    const player_colours     = [ 0x0080FF,  0x00FF80,  0xFF8000,  0x80FF00 ];
+    const player_colours_hex = [ '#0080FF', '#00FF80', '#FF8000', '#80FF00' ];
+
     let current_board = null;
     let selected      = { x: -1, y: -1 };
 
@@ -128,6 +131,20 @@ $(() => {
         selected      = { x: -1, y: -1 };
 
         renderBoard(current_board);
+
+        // Game info
+        $('#window-game-info').show();
+        $('#game-info-id').html('Game#' + game_data.id.toString());
+
+        const turn_colour = player_colours_hex[game_data.current_player];
+        const turn_string = "<span style='font-weight:bold;color:" + turn_colour + "'>" + game_data.lobby.player_usernames[game_data.current_player] + "</span>'s turn"
+        $('#game-info-turn').html(turn_string);
+
+        if (game_data.burning) {
+            $('#game-info-burning').html('Select a tile to burn');
+        } else {
+            $('#game-info-burning').html('Move a piece');
+        }
     });
 
 
@@ -150,7 +167,6 @@ $(() => {
     const grp_board_grid = new PIXI.Graphics();
     app.stage.addChild(grp_board_grid);
 
-    const player_colours    = [ 0x0080FF, 0x00FF80, 0xFF8000, 0x80FF00 ];
     const grp_player_pieces = [];
 
     for (let i = 0; i < 4; i++) {

@@ -30,7 +30,7 @@
 
 
         <!-- =================================================== LOGIN WINDOW -->
-        <div id='window-login' class='draggable window'>
+        <div id='window-login' class='window'>
             <p>Enter a username</p>
             <input type='text' id='login-username'>
             <input type='submit' id='btn-login' value='Play'>
@@ -86,6 +86,17 @@
                     <div id='game-container'>
                         <div id='game'></div>
                     </div>
+                </div>
+            </div>
+
+            <div id='window-game-info' class='draggable window'>
+                <p class='window-title'>Game Info</p>
+                <p class='window-dragbox'>☰</p>
+
+                <div class='window-content'>
+                    <p id='game-info-id'></p>
+                    <p id='game-info-turn'></p>
+                    <p id='game-info-burning'></p>
                 </div>
             </div>
 

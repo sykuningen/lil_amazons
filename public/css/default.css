@@ -7,6 +7,10 @@
     padding: 0;
 }
 
+html, body {
+    height: 100vh;
+}
+
 /* Background SVG is from https://www.heropatterns.com/ */
 body {
     background-color: #1d4c5c;
@@ -111,6 +115,12 @@ div#window-game {
     width:   auto;
     height:  auto;
 }
+div#window-game-info {
+    top:      50px;
+    left:   1176px;
+    width:   300px;
+    height:  610px;
+}
 div#window-server-log {
     bottom:  20px;
     left:    20px;
@@ -126,6 +136,13 @@ p {
 
     font:  12px 'Saira Semi Condensed';
     color: white;
+}
+
+p#game-info-id {
+    font-weight: bold;
+}
+p#game-info-burning {
+    font-style: italic;
 }
 
 a {
