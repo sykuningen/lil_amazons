@@ -85,6 +85,7 @@ class Game:
             self.burning = True  # Player must now burn a tile
 
             self.emitBoard()
+            self.sio.emit('select_piece', self.lmp, player.sid)
 
         except IndexError:
             pass  # TODO: Dispatch an error
@@ -110,6 +111,7 @@ class Game:
                 self.current_player = 0
 
             self.emitBoard()
+            self.sio.emit('select_piece', {'x': -1, 'y': -1}, player.sid)
 
         except IndexError:
             pass  # TODO: Dispatch an error

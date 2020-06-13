@@ -9,8 +9,8 @@ class AmazonsLogic:
         if piece == to:
             return False
 
-        # Trying to move horizontally?
-        if piece['x'] == to['x']:
+        # Trying to move vertically?
+        elif piece['x'] == to['x']:
             bgn = min(piece['y'], to['y'])
             end = max(piece['y'], to['y'])
 
@@ -24,8 +24,8 @@ class AmazonsLogic:
 
             return True
 
-        # Trying to move vertically?
-        if piece['y'] == to['y']:
+        # Trying to move horizontally?
+        elif piece['y'] == to['y']:
             bgn = min(piece['x'], to['x'])
             end = max(piece['x'], to['x'])
 
@@ -40,7 +40,7 @@ class AmazonsLogic:
             return True
 
         # Trying to move diagonally?
-        if abs(piece['x'] - to['x']) == abs(piece['y'] - to['y']):
+        elif abs(piece['x'] - to['x']) == abs(piece['y'] - to['y']):
             change_x = 1 if piece['x'] < to['x'] else -1
             change_y = 1 if piece['y'] < to['y'] else -1
 

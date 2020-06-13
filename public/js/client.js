@@ -125,12 +125,10 @@ $(() => {
     let selected      = { x: -1, y: -1 };
 
     socket.on('game_data', (game_data) => {
-        $('#window-game').show();
-
         current_board = game_data.board;
-        selected      = { x: -1, y: -1 };
-
         renderBoard(current_board);
+
+        $('#window-game').show();
 
         // Game info
         $('#window-game-info').show();
@@ -145,6 +143,11 @@ $(() => {
         } else {
             $('#game-info-burning').html('Move a piece');
         }
+    });
+
+    socket.on('select_piece', (piece) => {
+        selected = piece;
+        renderBoard(current_board);
     });
 
 
@@ -164,11 +167,14 @@ $(() => {
     const board_offset = 50;
     const tile_size    = (width - 100) / 10;
 
+    // PIXIJS graphics setup
     const grp_board_grid = new PIXI.Graphics();
     app.stage.addChild(grp_board_grid);
 
-    const grp_player_pieces = [];
+    const grp_valid_move_marker = new PIXI.Graphics();
+    app.stage.addChild(grp_valid_move_marker);
 
+    const grp_player_pieces = [];
     for (let i = 0; i < 4; i++) {
         grp_player_pieces[i] = new PIXI.Graphics();
         app.stage.addChild(grp_player_pieces[i]);
@@ -178,6 +184,9 @@ $(() => {
     function resetGraphics() {
         grp_board_grid.clear();
         grp_board_grid.lineStyle(1, 0x3B7080, 1, 0);
+
+        grp_valid_move_marker.clear();
+        grp_valid_move_marker.lineStyle(1, 0xFFFFFF, 1, 0);
 
         for (let i = 0; i < 4; i++) {
             grp_player_pieces[i].clear();
@@ -220,6 +229,14 @@ $(() => {
                         pos_y + tile_size/2,
                         tile_size/4 );
                 }
+
+                // Highlight tiles that are a valid move
+                if (selected.x != -1 && validMove(board, selected, { x: x, y: y })) {
+                    grp_valid_move_marker.drawCircle(
+                        pos_x + tile_size/2,
+                        pos_y + tile_size/2,
+                        tile_size/16 );
+                }
             }
         }
     }
@@ -246,4 +263,80 @@ $(() => {
             socket.emit('attempt_move', selected, { x: tile_x, y: tile_y });
         }
     });
+
+    function validMove(board, piece, to) {
+        // Trying to move to the same tile?
+        if (piece.x == to.x && piece.y == to.y) {
+            return false;
+        }
+
+        // Trying to move vertically?
+        else if (piece.x == to.x) {
+            let bgn = Math.min(piece.y, to.y);
+            let end = Math.max(piece.y, to.y);
+
+            if (piece.y < to.y) {
+                bgn += 1;
+                end += 1;
+            }
+
+            for (let t = bgn; t < end; t++) {
+                if (board.board[piece.x][t] != -1) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        // Trying to move horizontally?
+        else if (piece.y == to.y) {
+            let bgn = Math.min(piece.x, to.x);
+            let end = Math.max(piece.x, to.x);
+
+            if (piece.x < to.x) {
+                bgn += 1;
+                end += 1;
+            }
+
+            for (let t = bgn; t < end; t++) {
+                if (board.board[t][piece.y] != -1) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        // Trying to move diagonally?
+        else if (Math.abs(piece.x - to.x) == Math.abs(piece.y - to.y)) {
+            let change_x = -1;
+            let change_y = -1;
+
+            if (piece.x < to.x) {
+                change_x = 1;
+            }
+            if (piece.y < to.y) {
+                change_y = 1;
+            }
+
+            let x = piece.x;
+            let y = piece.y;
+
+            while (true) {
+                x += change_x;
+                y += change_y;
+
+                if (board.board[x][y] != -1) {
+                    return false;
+                }
+
+                if (x == to.x) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
 });
