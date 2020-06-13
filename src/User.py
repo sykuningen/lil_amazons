@@ -1,10 +1,16 @@
 class User:
-    def __init__(self, sid):
+    def __init__(self, sid, ai_player=False):
         self.sid = sid
         self.logged_in = False
         self.username = None
 
         self.lobby = None
+
+        # AI
+        self.ai_player = ai_player
+
+        if ai_player:
+            self.username = 'AI Player'
 
     def setUsername(self, username):
         self.username = username

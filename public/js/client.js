@@ -69,6 +69,8 @@ $(() => {
             socket.emit('join_players');
         } else if (e.target.id == 'btn-ready-leave') {
             socket.emit('leave_players');
+        } else if (e.target.id == 'btn-add-ai') {
+            socket.emit('add_ai_player');
         } else if (e.target.id == 'btn-start-game') {
             $('#start-game-p').hide();
             socket.emit('start_game');
@@ -85,6 +87,7 @@ $(() => {
         if (lobby_info.started) {
             $('#btn-ready-up').hide();
             $('#btn-ready-leave').hide();
+            $('#btn-add-ai').hide();
         } else {
             if (lobby_info.owner_sid == my_sid) {
                 $('#start-game-p').show();
@@ -99,6 +102,8 @@ $(() => {
                 $('#btn-ready-up').show();
                 $('#btn-ready-leave').hide();
             }
+
+            $('#btn-add-ai').show();
         }
 
         $('#window-lobby-create').show();

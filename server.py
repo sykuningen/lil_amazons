@@ -190,6 +190,30 @@ def leavePlayers(sid):
     sio.emit('lobby_list', [lobbies[x].toJSON() for x in lobbies])
 
 
+@sio.on('add_ai_player')
+def addAiPlayer(sid):
+    # Ensure that the user is in a lobby
+    if not users[sid].lobby:
+        return
+
+    if users[sid].lobby.owner.sid != sid:
+        return
+
+    if users[sid].lobby.started:
+        return
+
+    ai_player = User(None, ai_player=True)
+    users[sid].lobby.addUser(ai_player)
+    users[sid].lobby.addAsPlayer(ai_player)
+
+    # Update the lobby for the other users in it
+    for p in users[sid].lobby.users:
+        sio.emit('update_lobby', users[sid].lobby.toJSON(), room=p.sid)
+
+    # Update lobby list for all users
+    sio.emit('lobby_list', [lobbies[x].toJSON() for x in lobbies])
+
+
 # ============================================================== Game
 @sio.on('start_game')
 def startGame(sid):
