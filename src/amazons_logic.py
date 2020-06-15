@@ -59,6 +59,30 @@ class AmazonsLogic:
 
         return False
 
+    def getPieces(self, board, player_n):
+        pieces = []
+
+        for x in range(0, board.width):
+            for y in range(0, board.height):
+                if board.board[x][y] == player_n:
+                    pieces.append({'x': x, 'y': y})
+
+        return pieces
+
+    def getValidMoves(self, board, player_n):
+        pieces = self.getPieces(board, player_n)
+        valid = []
+
+        for x in range(0, board.width):
+            for y in range(0, board.height):
+                for p in pieces:
+                    pos = {'x': x, 'y': y}
+
+                    if pos not in valid and self.validMove(board, p, pos):
+                        valid.append(pos)
+
+        return valid
+
     def regions(self, board):
         regions = {}
         cregion = 0
