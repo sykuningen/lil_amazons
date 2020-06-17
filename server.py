@@ -173,7 +173,7 @@ def leaveLobby(sid):
 
         else:
             users[sid].leaveLobby('left lobby')
-            sio.emit('leave_lobby', lobby.toJSON(), room=sid)
+            sio.emit('leave_lobby', room=sid)
 
             # Update the lobby for the other users in it
             for p in lobby.users:

@@ -178,6 +178,10 @@ p.header {
     font-weight: bold;
 }
 
+p#start-game-p {
+    font-weight: bold;
+}
+
 p#game-info-id {
     font-weight: bold;
 }
