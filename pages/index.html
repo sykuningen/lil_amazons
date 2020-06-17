@@ -21,7 +21,7 @@
             <p>
                 <a href='/' id='navbar-home'>Home</a>
                 <a href='#' id='navbar-lobby-list'>Lobby List</a>
-                <a href='#' id='navbar-lobby-create'>Lobby</a>
+                <a href='#' id='navbar-lobby-create'>Create Lobby</a>
                 <a href='#' id='navbar-server-log'>Server Log</a>
 
                 <span id='navbar-online-users'></span>
@@ -54,24 +54,38 @@
                 <p class='window-dragbox'>☰</p>
 
                 <div class='window-content'>
-                    <p class='header'><a href='#' id='btn-create-lobby'>Create Lobby</a></p>
-                    <p>In lobby: <span id='lobby-id'>none</span></p>
+                    <p class='header'>Current Lobby: <span id='lobby-id'>none</span></p>
+                    <p>> <a href='#' id='btn-create-lobby'>Create Lobby</a></p>
 
-                    <hr />
-                    <table>
-                        <tr class='header'>
-                            <td style='width:50%'><p>In Lobby</p></td>
-                            <td><p>Players ( <a href='#' id='btn-ready-up' style='display:none'>Join</a><a href='#' id='btn-ready-leave' style='display:none'>Leave</a> | <a href='#' id='btn-add-ai' style='display:none'>Add AI Player</a> )</p></td>
-                        </tr>
-                        <tr>
-                            <td><p id='lobby-users'></p></td>
-                            <td><p id='lobby-plyrs'></p></td>
-                        </tr>
-                    </table>
+                    <div id='lobby-info'>
+                        <p id='start-game-p' style='display:none'>
+                            > <a href='#' id='btn-start-game'>Start Game</a>
+                        </p>
+                        <p id='watch-game-p' style='display:none'>
+                            > <a href='#' id='btn-watch-game'>Watch/Re-join Game</a>
+                        </p>
 
-                    <hr />
-                    <p class='header'>Game Config</p>
-                    <textarea id='lobby-game-config'>{ 'pieces': [
+                        <hr />
+                        <p class='header'>Lobby Players</p>
+                        <table>
+                            <tr class='header'>
+                                <td style='width:50%'><p>Spectators</p></td>
+                                <td><p>Players</p></td>
+                            </tr>
+                            <tr>
+                                <td><p id='lobby-users'></p></td>
+                                <td><p id='lobby-plyrs'></p></td>
+                            </tr>
+                        </table>
+
+                        <p class='lobby-options'>
+                            > <a href='#' id='btn-ready-up' style='display:none'>Join Players</a><a href='#' id='btn-ready-leave' style='display:none'>Leave Players</a><br />
+                            > <a href='#' id='btn-add-ai' style='display:none'>Add AI Player</a>
+                        </p>
+
+                        <hr />
+                        <p class='header'><a href='#' id='toggle-game-config'>Game Config ▾</a></p>
+                        <textarea id='lobby-game-config'>{ 'pieces': [
     { 'x': 3, 'y': 0, 'owner': 0 },
     { 'x': 6, 'y': 0, 'owner': 0 },
     { 'x': 0, 'y': 3, 'owner': 0 },
@@ -80,13 +94,7 @@
     { 'x': 6, 'y': 9, 'owner': 1 },
     { 'x': 0, 'y': 6, 'owner': 1 },
     { 'x': 9, 'y': 6, 'owner': 1 }]}</textarea>
-
-                    <p id='start-game-p' style='display:none'>
-                        <a href='#' id='btn-start-game'>Start Game</a>
-                    </p>
-                    <p>
-                        <a href='#' id='btn-watch-game'>Watch/Re-join Game</a>
-                    </p>
+                    </div>
                 </div>
             </div>
 

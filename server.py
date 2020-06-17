@@ -69,15 +69,15 @@ def disconnect(sid):
             lobby.shutdown(sio, 'disconnected')
             del lobbies[lobby.id]
 
+            # Update lobby list for all users
+            sio.emit('lobby_list', [lobbies[x].toJSON() for x in lobbies])
+
         else:
             users[sid].leaveLobby('disconnected')
 
             # Update the lobby for the other users in it
             for p in lobby.users:
                 sio.emit('update_lobby', lobby.toJSON(), room=p.sid)
-
-        # Update lobby list for all users
-        # sio.emit('lobby_list', [lobbies[x].toJSON() for x in lobbies])
 
     logger.removeListener(sid)
 
@@ -155,6 +155,29 @@ def joinLobby(sid, lobby_id):
     # Update the lobby for the other users in it
     for p in lobby.users:
         sio.emit('update_lobby', lobby.toJSON(), room=p.sid)
+
+
+@sio.on('leave_lobby')
+def leaveLobby(sid):
+    # Leave the lobby the user was in, if any
+    if users[sid].lobby:
+        lobby = users[sid].lobby
+
+        # Shut down the lobby if this user owned it and the game hasn't started
+        if sid == lobby.owner.sid and not lobby.started:
+            lobby.shutdown(sio, 'left lobby')
+            del lobbies[lobby.id]
+
+            # Update lobby list for all users
+            sio.emit('lobby_list', [lobbies[x].toJSON() for x in lobbies])
+
+        else:
+            users[sid].leaveLobby('left lobby')
+            sio.emit('leave_lobby', lobby.toJSON(), room=sid)
+
+            # Update the lobby for the other users in it
+            for p in lobby.users:
+                sio.emit('update_lobby', lobby.toJSON(), room=p.sid)
 
 
 # Join the player list in a lobby (meaning you will be participating)
