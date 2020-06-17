@@ -297,8 +297,14 @@ $(() => {
         }
 
         if (current_board.board[tile_x][tile_y] >= 0) {
-            // Selected a piece
-            selected = { x: tile_x, y: tile_y };
+            if (tile_x == selected.x && tile_y == selected.y) {
+                // Deselected a piece
+                selected = { x: -1, y: -1 };
+            } else {
+                // Selected a piece
+                selected = { x: tile_x, y: tile_y };
+            }
+
             renderBoard(current_board);
         } else {
             // Selected a tile to move to or to burn
