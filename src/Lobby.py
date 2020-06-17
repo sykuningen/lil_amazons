@@ -63,5 +63,6 @@ class Lobby:
             'players': [p.sid for p in self.players],
             'user_usernames': [u.username for u in self.users],
             'player_usernames': [p.username for p in self.players],
-            'started': self.started
+            'started': self.started,
+            'active': self.active
         }

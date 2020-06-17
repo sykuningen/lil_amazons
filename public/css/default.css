@@ -131,10 +131,10 @@ div#window-lobby-list {
 }
 
 div#window-lobby-create {
-    top:    264px;
+    top:    266px;
     left:    20px;
     width:  500px;
-    height: 426px;
+    height: 424px;
 }
 div#lobby-info, textarea#lobby-game-config {
     display: none;
@@ -142,14 +142,14 @@ div#lobby-info, textarea#lobby-game-config {
 
 div#window-game {
     top:     65px;
-    left:   519px;
+    left:   521px;
     width:   auto;
     height:  auto;
 }
 
 div#window-game-info {
     top:      65px;
-    left:   1120px;
+    left:   1124px;
     width:   300px;
     height:  625px;
 }
@@ -178,8 +178,31 @@ p.header {
     font-weight: bold;
 }
 
-p#start-game-p {
-    font-weight: bold;
+p.button {
+    margin-top: 10px;
+}
+p.button a {
+    padding:        3px;
+    padding-left:  10px;
+    padding-right: 10px;
+
+    background: rgba(255,240,128,.1);
+    border: 1px rgba(255,240,128,1) solid;
+
+    color: #FFE971;
+}
+
+a#btn-create-lobby {
+    background: rgba(255,128,128,.1);
+    border: 1px rgba(255,128,128,1) solid;
+
+    color: #FF8080;
+}
+a#btn-start-game {
+    background: rgba(0,255,128,.1);
+    border: 1px rgba(0,255,128,1) solid;
+
+    color: #00FF80;
 }
 
 p#game-info-id {

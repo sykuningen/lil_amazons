@@ -41,12 +41,14 @@ $(() => {
 
     // *======================================================== LOBBY
     socket.on('lobby_list', (lobbies) => {
-        let html = '<table><tr class="header"><td><p>Lobby ID</p></td><td><p>Players</p></td><td></td></tr>';
+        let html = '<table><tr class="header"><td><p>Lobby ID</p></td><td><p>Started</p></td><td><p>Players</p></td><td></td></tr>';
 
         for (let i = 0; i < lobbies.length; i++) {
             html
                 += '<tr><td><p>'
                 + lobbies[i].id
+                + '</p></td><td><p>'
+                + lobbies[i].started
                 + '</p></td><td><p>'
                 + lobbies[i].player_usernames.join('<br />')
                 + '</p></td><td><p>'

@@ -265,6 +265,9 @@ def startGame(sid, game_config):
     for p in game.lobby.users:
         sio.emit('update_lobby', game.lobby.toJSON(), room=p.sid)
 
+    # Update lobby list for all users
+    updateClientLobbyList()
+
 
 @sio.on('watch_game')
 def watchGame(sid):
@@ -290,6 +293,8 @@ def attemptMove(sid, piece, to):
     lobby_id = users[sid].lobby.id
     if lobby_id in games:
         games[lobby_id].attemptMove(users[sid], piece, to)
+
+    # TODO: Update lobby list for all users when a game ends
 
 
 # *============================================================= MAIN

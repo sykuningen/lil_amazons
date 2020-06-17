@@ -55,16 +55,14 @@
 
                 <div class='window-content'>
                     <p class='header'>Current Lobby: <span id='lobby-id'>none</span></p>
-                    <p>> <a href='#' id='btn-create-lobby'>Create Lobby</a></p>
+
+                    <p class='button'>
+                        <a href='#' id='btn-create-lobby'>Create Lobby</a>
+                        <span id='start-game-p' style='display:none'><a href='#' id='btn-start-game'>Start Game</a></span>
+                        <span id='watch-game-p' style='display:none'><a href='#' id='btn-watch-game'>Watch/Re-join Game</a></span>
+                    </p>
 
                     <div id='lobby-info'>
-                        <p id='start-game-p' style='display:none'>
-                            > <a href='#' id='btn-start-game'>Start Game</a>
-                        </p>
-                        <p id='watch-game-p' style='display:none'>
-                            > <a href='#' id='btn-watch-game'>Watch/Re-join Game</a>
-                        </p>
-
                         <hr />
                         <p class='header'>Lobby Players</p>
                         <table>
@@ -78,9 +76,9 @@
                             </tr>
                         </table>
 
-                        <p class='lobby-options'>
-                            > <a href='#' id='btn-ready-up' style='display:none'>Join Players</a><a href='#' id='btn-ready-leave' style='display:none'>Leave Players</a><br />
-                            > <a href='#' id='btn-add-ai' style='display:none'>Add AI Player</a>
+                        <p class='lobby-options button'>
+                            <a href='#' id='btn-ready-up' style='display:none'>Join Players</a><a href='#' id='btn-ready-leave' style='display:none'>Leave Players</a>
+                            <a href='#' id='btn-add-ai'   style='display:none'>Add AI Player</a>
                         </p>
 
                         <hr />
