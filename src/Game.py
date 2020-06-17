@@ -148,6 +148,8 @@ class Game:
             self.ended = True
             self.winner = max(self.scores, key=self.scores.get)
 
+            self.lobby.active = False
+
     def toJSON(self):
         return {
             'id': self.id,

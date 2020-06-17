@@ -9,6 +9,7 @@ class Lobby:
         self.users = []       # All users currently in the lobby
         self.players = []     # Users that are in the actual players list
         self.started = False  # Whether the game has started
+        self.active = True    # Whether it should appear in lobby list
 
         # Notify about lobby creation
         self.logstr = f'Lobby#{self.id}'

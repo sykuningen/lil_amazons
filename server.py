@@ -34,6 +34,13 @@ lobbies = {}
 games = {}
 
 
+# *============================================================= HELPERS
+def updateClientLobbyList():
+    sio.emit(
+        'lobby_list',
+        [lobbies[x].toJSON() for x in lobbies if lobbies[x].active])
+
+
 # *============================================================= SOCKET.IO
 @sio.on('connect')
 def connect(sid, env):
@@ -47,7 +54,7 @@ def connect(sid, env):
 
     # Send client their sid and the lobby listing
     sio.emit('sid', sid, room=sid)
-    sio.emit('lobby_list', [lobbies[x].toJSON() for x in lobbies], room=sid)
+    updateClientLobbyList()
 
 
 @sio.on('disconnect')
@@ -70,7 +77,7 @@ def disconnect(sid):
             del lobbies[lobby.id]
 
             # Update lobby list for all users
-            sio.emit('lobby_list', [lobbies[x].toJSON() for x in lobbies])
+            updateClientLobbyList()
 
         else:
             users[sid].leaveLobby('disconnected')
@@ -130,7 +137,7 @@ def createLobby(sid):
 
     # Update lobby info for users
     sio.emit('update_lobby', lobby.toJSON(), room=sid)
-    sio.emit('lobby_list', [lobbies[x].toJSON() for x in lobbies])
+    updateClientLobbyList()
 
 
 @sio.on('join_lobby')
@@ -169,7 +176,7 @@ def leaveLobby(sid):
             del lobbies[lobby.id]
 
             # Update lobby list for all users
-            sio.emit('lobby_list', [lobbies[x].toJSON() for x in lobbies])
+            updateClientLobbyList()
 
         else:
             users[sid].leaveLobby('left lobby')
@@ -210,7 +217,7 @@ def leavePlayers(sid):
         sio.emit('update_lobby', users[sid].lobby.toJSON(), room=p.sid)
 
     # Update lobby list for all users
-    sio.emit('lobby_list', [lobbies[x].toJSON() for x in lobbies])
+    updateClientLobbyList()
 
 
 @sio.on('add_ai_player')
@@ -234,7 +241,7 @@ def addAiPlayer(sid):
         sio.emit('update_lobby', users[sid].lobby.toJSON(), room=p.sid)
 
     # Update lobby list for all users
-    sio.emit('lobby_list', [lobbies[x].toJSON() for x in lobbies])
+    updateClientLobbyList()
 
 
 # ============================================================== Game
