@@ -179,7 +179,10 @@ p.header {
 }
 
 p.button {
-    margin-top: 10px;
+    margin-top:    10px;
+    margin-bottom: 10px;
+
+    text-align: center;
 }
 p.button a {
     padding:        3px;
