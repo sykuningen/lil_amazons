@@ -229,17 +229,17 @@ $(() => {
     const width  = 600;
     const height = 600;
 
-    const app = new PIXI.Application({
+    window.app = new PIXI.Application({
         width:  width,
         height: height,
         antialias:   true,
         transparent: true });
 
-    $('#game').html(app.view);
+    $('#game').html(window.app.view);
 
     // Board graphical setup
-    const board_offset = 50;
-    const tile_size    = (width - 100) / 10;
+    let board_offset = window.app.renderer.width / 20;
+    let tile_size    = (window.app.renderer.width - board_offset*2) / 10;
 
     // PIXIJS graphics setup
     const grp_board_grid = new PIXI.Graphics();
@@ -269,7 +269,14 @@ $(() => {
     }
 
     function renderBoard(board) {
+        if (!board) {
+            return;
+        }
+
         resetGraphics();
+
+        board_offset = window.app.renderer.width / 20;
+        tile_size    = (window.app.renderer.width - board_offset*2) / 10;
 
         for (let x = 0; x < board.width; x++) {
             for (let y = 0; y < board.height; y++) {
@@ -420,5 +427,11 @@ $(() => {
         }
 
         return false;
+    }
+
+
+    // *======================================================== BAD HACKY =(
+    window.renderBoard = () => {
+        renderBoard(current_board);
     }
 });

@@ -1,6 +1,7 @@
 $(() => {
     // Set up draggable windows
     let current_z_index = 10;
+    let maximized       = null;
 
     interact('.draggable')
         .draggable({
@@ -38,12 +39,20 @@ $(() => {
 
                     e.currentTarget.style.zIndex = current_z_index;
                     current_z_index += 1;
+
+                    maximized = null;
+
+                    // Update board size
+                    const size = Math.min($('#window-game').width(), $('#window-game').height());
+
+                    window.app.renderer.resize(size, size);
+                    window.renderBoard();
                 }
             },
 
             modifiers: [
                 interact.modifiers.restrictSize({
-                    min: { width: 212, height: 50 }
+                    min: { width: 200, height: 200 }
                 })
             ],
 
@@ -51,8 +60,10 @@ $(() => {
             allowFrom: '.window-dragbox'
         })
         .on('tap', (e) => {
-            e.currentTarget.style.zIndex = current_z_index;
-            current_z_index += 1;
+            if (e.currentTarget != maximized) {
+                e.currentTarget.style.zIndex = current_z_index;
+                current_z_index += 1;
+            }
         });
 
     function dragMoveListener(event) {
@@ -64,8 +75,10 @@ $(() => {
         target.setAttribute('data-x', x);
         target.setAttribute('data-y', y);
 
-        event.currentTarget.style.zIndex = current_z_index;
-        current_z_index += 1;
+        if (event.currentTarget != maximized) {
+            event.currentTarget.style.zIndex = current_z_index;
+            current_z_index += 1;
+        }
     }
 
     window.dragMoveListener = dragMoveListener;
@@ -81,5 +94,22 @@ $(() => {
                 $(target).show();
             }
         }
+    });
+
+    $('#window-game').on('click', 'a', (e) => {
+        $(e.delegateTarget).css({
+            top:    '42px',
+            bottom: 0,
+            left:   0,
+            right:  0 });
+
+        $(e.delegateTarget).css('z-index', '0');
+        maximized = e.delegateTarget;
+
+        // Update board size
+        const size = Math.min($('#window-game').width(), $('#window-game').height());
+
+        window.app.renderer.resize(size, size);
+        window.renderBoard();
     });
 });

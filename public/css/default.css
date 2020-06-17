@@ -91,6 +91,16 @@ p.window-dragbox {
     text-align:  center;
     color:       #333;
 }
+p.window-maximize {
+    position: absolute;
+    top:      0;
+    left:     0;
+
+    background: #333;
+
+    font-weight: bold;
+    text-align:  center;
+}
 
 /* ============================================================= Window Content */
 div.window-content {
