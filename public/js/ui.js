@@ -18,7 +18,7 @@ $(() => {
             allowFrom: '.window-title'
         })
         .resizable({
-            edges: { right: true, top: true },
+            edges: { bottom: true, right: true },
 
             listeners: {
                 move(e) {
@@ -42,9 +42,6 @@ $(() => {
             },
 
             modifiers: [
-                interact.modifiers.restrictEdges({
-                    outer: 'parent'
-                }),
                 interact.modifiers.restrictSize({
                     min: { width: 212, height: 50 }
                 })

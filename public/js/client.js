@@ -73,7 +73,7 @@ $(() => {
             socket.emit('add_ai_player');
         } else if (e.target.id == 'btn-start-game') {
             $('#start-game-p').hide();
-            socket.emit('start_game', $('#lobby-game-config').html());
+            socket.emit('start_game', $('#lobby-game-config').val());
         } else if (e.target.id == 'btn-watch-game') {
             socket.emit('watch_game');
         }
@@ -123,8 +123,8 @@ $(() => {
 
 
     // *======================================================== GAME
-    const player_colours     = [ 0x0080FF,  0x00FF80,  0xFF8000,  0x80FF00 ];
-    const player_colours_hex = [ '#0080FF', '#00FF80', '#FF8000', '#80FF00' ];
+    const player_colours     = [ 0x00C0FF,  0x00FF80,  0xC080FF,  0xFF8030 ];
+    const player_colours_hex = [ '#00C0FF', '#00FF80', '#C080FF', '#FF8030' ];
 
     let current_board = null;
     let selected      = { x: -1, y: -1 };
@@ -223,7 +223,7 @@ $(() => {
 
     function resetGraphics() {
         grp_board_grid.clear();
-        grp_board_grid.lineStyle(1, 0x3B7080, 1, 0);
+        grp_board_grid.lineStyle(1, 0x303030, 1, 0);
 
         grp_valid_move_marker.clear();
         grp_valid_move_marker.lineStyle(1, 0xFFFFFF, 1, 0);
@@ -240,14 +240,16 @@ $(() => {
         for (let x = 0; x < board.width; x++) {
             for (let y = 0; y < board.height; y++) {
 
-                // Draw tile depending on its state
-                if (x == selected.x && y == selected.y) {
-                    // Fill in tile to show that it is selected
-                    grp_board_grid.beginFill(0x3B7080, .5);
-                }
-                else if (board.board[x][y] == -2) {
+                if (board.board[x][y] == -2) {
                     // Fill in tile to show that it has been burned
-                    grp_board_grid.beginFill(0x3B7080, 1);
+                    grp_board_grid.beginFill(0xC0C0C0, 1);
+                }
+                else if (board.board[x][y] >= 0) {
+                    let alpha = .1;
+                    if (x == selected.x && y == selected.y) {
+                        alpha = .5;
+                    }
+                    grp_board_grid.beginFill(player_colours[board.board[x][y]], alpha);
                 }
                 else if ((x + y) % 2 == 0) {
                     // Fill in tiles with a minimal checkerboard pattern
