@@ -221,10 +221,6 @@ a#btn-start-game {
 p#game-info-id {
     font-weight: bold;
 }
-p#game-info-turn {
-    margin-top:    5px;
-    padding-left: 10px;
-}
 p#game-info-burning {
     font-style: italic;
 }
@@ -276,6 +272,19 @@ tr:nth-child(even) {
 
 td {
     vertical-align: top;
+}
+
+#lobby-plyrs p:nth-child(1) {
+    background: linear-gradient(90deg, rgba(0,192,255,.5), transparent);
+}
+#lobby-plyrs p:nth-child(2) {
+    background: linear-gradient(90deg, rgba(0,255,128,.5), transparent);
+}
+#lobby-plyrs p:nth-child(3) {
+    background: linear-gradient(90deg, rgba(192,128,255,.5), transparent);
+}
+#lobby-plyrs p:nth-child(4) {
+    background: linear-gradient(90deg, rgba(255,128,64,.5), transparent);
 }
 
 

@@ -60,8 +60,12 @@ $(() => {
         $('#lobby-list').html(html);
     });
 
-    $('#lobby-list').on('click', 'a', (e) => {
-        socket.emit('join_lobby', e.target.id);
+    $('#window-lobby-list').on('click', 'a', (e) => {
+        if (e.target.id == 'navbar-lobby-create') {
+            $('#window-lobby-create').show();
+        } else {
+            socket.emit('join_lobby', e.target.id);
+        }
     });
 
     // Lobby Create
@@ -99,7 +103,7 @@ $(() => {
 
         $('#lobby-id').html('#' + lobby_info.id.toString());
         $('#lobby-users').html(lobby_info.user_usernames.join('<br />'));
-        $('#lobby-plyrs').html(lobby_info.player_usernames.join('<br />'));
+        $('#lobby-plyrs').html('<p>' + lobby_info.player_usernames.join('</p><p>') + '</p>');
 
         if (lobby_info.started) {
             $('.lobby-options').hide();
@@ -137,9 +141,7 @@ $(() => {
     socket.on('leave_lobby', () => {
         in_lob = false;
 
-        $('#window-lobby-create').hide();
         $('#lobby-info').hide();
-
         $('#btn-create-lobby').html('Create Lobby');
 
         $('.lobby-options').hide();
@@ -149,7 +151,9 @@ $(() => {
 
         $('#btn-ready-up').hide();
         $('#btn-ready-leave').hide();
+
         $('#start-game-p').hide();
+        $('#watch-game-p').hide();
 
         $('#window-game').hide();
         $('#window-game-info').hide();
@@ -172,6 +176,10 @@ $(() => {
         // Game info
         $('#window-game-info').show();
         $('#game-info-id').html('Game#' + game_data.id.toString());
+
+        const my_player_n = game_data.lobby.players.indexOf(my_sid);
+        const my_colour   = player_colours_hex[my_player_n];
+        $('#game-info-me').html("You are <span style='font-weight:bold;color:" + my_colour + "'>" + game_data.lobby.player_usernames[my_player_n] + '</span>');
 
         if (game_data.ended) {
             const colour = player_colours_hex[game_data.winner];

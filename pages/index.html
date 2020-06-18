@@ -44,6 +44,7 @@
                 <p class='window-dragbox'>☰</p>
 
                 <div class='window-content'>
+                    <p class='header'><a href='#' id='navbar-lobby-create'>Create Lobby</a></p>
                     <div id='lobby-list'></div>
                 </div>
             </div>
@@ -55,8 +56,6 @@
 
                 <div class='window-content'>
                     <p class='header'>Current Lobby: <span id='lobby-id'>none</span></p>
-                    <p>Click the Create Lobby button to set up a match, then the Join Players button to ready up as a player.</p>
-
                     <p class='button'>
                         <a href='#' id='btn-create-lobby'>Create Lobby</a>
                         <span id='start-game-p' style='display:none'><a href='#' id='btn-start-game'>Start Game</a></span>
@@ -73,7 +72,7 @@
                             </tr>
                             <tr>
                                 <td><p id='lobby-users'></p></td>
-                                <td><p id='lobby-plyrs'></p></td>
+                                <td><div id='lobby-plyrs'></div></td>
                             </tr>
                         </table>
 
@@ -116,6 +115,7 @@
 
                 <div class='window-content'>
                     <p id='game-info-id' class='header'></p>
+                    <p id='game-info-me'></p>
                     <p id='game-info-turn'></p>
                     <p id='game-info-burning'></p>
 

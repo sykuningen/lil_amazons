@@ -179,7 +179,7 @@ def leaveLobby(sid):
             updateClientLobbyList()
 
         else:
-            users[sid].leaveLobby('left lobby')
+            lobby = users[sid].leaveLobby('left lobby')
             sio.emit('leave_lobby', room=sid)
 
             # Update the lobby for the other users in it

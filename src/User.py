@@ -21,8 +21,12 @@ class User:
         lobby.addUser(self)
 
     def leaveLobby(self, reason):
+        lobby = self.lobby
+
         self.lobby.removeUser(self, reason)
         self.lobby = None
+
+        return lobby
 
     def logOff(self):
         self.logged_in = False
