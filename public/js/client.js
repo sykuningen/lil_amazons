@@ -334,7 +334,7 @@ $(() => {
 
 
     // *======================================================== GAME INTERACTION
-    $('#game').on('click', (e) => {
+    $('#game').on('click touchstart', (e) => {
         const x = e.offsetX - board_offset;
         const y = e.offsetY - board_offset;
 
